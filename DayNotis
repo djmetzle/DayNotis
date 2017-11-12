@@ -1,0 +1,10 @@
+#!/usr/bin/ruby -w
+
+$LOAD_PATH.unshift("./lib")
+
+require 'day_notis'
+
+basePath = Dir.pwd
+
+notis = DayNotis.new(basePath)
+

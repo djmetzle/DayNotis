@@ -131,6 +131,10 @@ FRIDAY:
                 level: notice
 
 SATURDAY:
+        2230:
+                title: Bedtime Soon
+                body: Why not get rested?
+                level: urgent
         2300:
                 title: BEDTIME
                 body: Your wife will be mad if you're up this late!

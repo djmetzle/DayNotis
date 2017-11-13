@@ -30,16 +30,16 @@ class NotisEngineTime
 
 	def currentItems(items)
 		currentItems = items.select do |item|
-			itemTimeMatch?(item, @timeNow)
+			itemTimeMatch?(item)
 		end
 		return currentItems.first
 	end
 
 	private
-	def itemTimeMatch?(item, time)
-		hourMatch = (item.hour == time.hour)
-		minuteMatch = (item.minute == time.minute)
-		hourMatch and minuteMatch
+	def itemTimeMatch?(item)
+		hourMatch = (item.hour == @timeNow.hour)
+		minuteMatch = (item.minute == @timeNow.minute)
+		return (hourMatch and minuteMatch)
 	end
 
 

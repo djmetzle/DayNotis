@@ -39,6 +39,7 @@ class NotisEngine
 			@config.reloadConfig
 		rescue RuntimeError
 			@notification.display("Notis Config Error")
+			# only warn about config errors once per minute
 			@engineTime.setLastTime
 			return false
 		end
@@ -47,7 +48,7 @@ class NotisEngine
 
 	def updateItems
 		@items = @config.getDayItems(@engineTime.dayName)
-		@currentItem = @engineTime.currentItems(@items)
+		@currentItem = @engineTime.currentItems(@items).first
 	end
 
 	def showNotification

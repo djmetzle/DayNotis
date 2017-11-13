@@ -32,7 +32,7 @@ class NotisEngineTime
 		currentItems = items.select do |item|
 			itemTimeMatch?(item)
 		end
-		return currentItems.first
+		return currentItems
 	end
 
 	private

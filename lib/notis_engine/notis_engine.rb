@@ -20,9 +20,7 @@ class NotisEngine
 
 	private
 	def mainLoop
-		updateTime
 		@engineTime.updateTime
-		return if sameTime?
 		return if @engineTime.sameTime?
 
 		return if not updateConfig?
@@ -37,17 +35,11 @@ class NotisEngine
 		showNotification
 	end
 
-	def updateTime
-		@timeNow = DateTime.now
-		return
-	end
-
 	def updateConfig?
 		begin
 			@config.reloadConfig
 		rescue RuntimeError
 			@notification.display("Notis Config Error")
-			setLastTime
 			@engineTime.setLastTime
 			return false
 		end
@@ -55,31 +47,11 @@ class NotisEngine
 	end
 
 	def updateItems
-		dayName = @timeNow.strftime('%^A')
-		@items = @config.getDayItems(dayName)
-		updateCurrentItem
-	end
-
-	def updateCurrentItem
-		items = @items.select do |item|
-			itemTimeMatch?(item, @timeNow)
-		end
-		@currentItem = items.first
+		@items = @config.getDayItems(@engineTime.dayName)
+		@currentItem = @engineTime.currentItems(@items)
 	end
 
 	# helpers for time comparison
-	def itemTimeMatch?(item, time)
-		hourMatch = (item.hour == time.hour)
-		minuteMatch = (item.minute == time.minute)
-		hourMatch and minuteMatch
-	end
-
-	def sameTime?
-		hourMatch = (@lastTime[:hour] == @timeNow.hour)
-		minuteMatch = (@lastTime[:minute] == @timeNow.minute)
-		hourMatch and minuteMatch
-	end
-	
 	def hasBeenRun?
 		# check for day rollover
 		dayName = @timeNow.strftime('%^A')
@@ -92,20 +64,11 @@ class NotisEngine
 		return (hourMatch and minuteMatch)
 	end
 
-	def setLastTime
-		dayName = @timeNow.strftime('%^A')
-		@lastTime[:day] = dayName
-		@lastTime[:hour] = @timeNow.hour
-		@lastTime[:minute] = @timeNow.minute
-		return
-	end
-
 	def showNotification
 		title = @currentItem.title
 		body = @currentItem.body
 		level = @currentItem.level
 		@notification.display(title, body, level)
-		setLastTime
 		@engineTime.setLastTime
 	end
 end

@@ -1,4 +1,6 @@
 class NotisEngineTime
+	attr_reader :dayName
+
 	def initialize
 		# The last notification tracked as ran
 		@lastTime = {:day => 'SUNDAY', :hour => 0, :minute => 0}
@@ -25,5 +27,20 @@ class NotisEngineTime
 		@lastTime[:minute] = @timeNow.minute
 		return
 	end
+
+	def currentItems(items)
+		currentItems = items.select do |item|
+			itemTimeMatch?(item, @timeNow)
+		end
+		return currentItems.first
+	end
+
+	private
+	def itemTimeMatch?(item, time)
+		hourMatch = (item.hour == time.hour)
+		minuteMatch = (item.minute == time.minute)
+		hourMatch and minuteMatch
+	end
+
 
 end

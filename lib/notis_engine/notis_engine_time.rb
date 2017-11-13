@@ -18,7 +18,7 @@ class NotisEngineTime
 		dayMatch = (@lastTime[:day] == @dayName)
 		hourMatch = (@lastTime[:hour] == @timeNow.hour)
 		minuteMatch = (@lastTime[:minute] == @timeNow.minute)
-		dayMatch and hourMatch and minuteMatch
+		return (dayMatch and hourMatch and minuteMatch)
 	end
 
 	def setLastTime

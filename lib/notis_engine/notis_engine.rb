@@ -28,7 +28,6 @@ class NotisEngine
 		updateItems
 
 		return if not @currentItem
-		return if hasBeenRun?
 
 		# if we've gotten here, the current item from the current
 		# config has not yet been run
@@ -49,19 +48,6 @@ class NotisEngine
 	def updateItems
 		@items = @config.getDayItems(@engineTime.dayName)
 		@currentItem = @engineTime.currentItems(@items)
-	end
-
-	# helpers for time comparison
-	def hasBeenRun?
-		# check for day rollover
-		dayName = @timeNow.strftime('%^A')
-		if @lastTime[:day] != dayName
-			return false
-		end
-
-		hourMatch = (@currentItem.hour == @lastTime[:hour])
-		minuteMatch = (@currentItem.minute == @lastTime[:minute])
-		return (hourMatch and minuteMatch)
 	end
 
 	def showNotification

@@ -1,9 +1,11 @@
-
+require 'notis_engine/notis_engine_time'
 
 class NotisEngine
 	def initialize(config, notification)
 		@config = config
 		@notification = notification
+
+		@engineTime = NotisEngineTime.new
 
 		@lastTime = {:day => 'SUNDAY', :hour => 0, :minute => 0}
 	end
@@ -19,7 +21,9 @@ class NotisEngine
 	private
 	def mainLoop
 		updateTime
+		@engineTime.updateTime
 		return if sameTime?
+		return if @engineTime.sameTime?
 
 		return if not updateConfig?
 
@@ -44,6 +48,7 @@ class NotisEngine
 		rescue RuntimeError
 			@notification.display("Notis Config Error")
 			setLastTime
+			@engineTime.setLastTime
 			return false
 		end
 		return true
@@ -101,6 +106,7 @@ class NotisEngine
 		level = @currentItem.level
 		@notification.display(title, body, level)
 		setLastTime
+		@engineTime.setLastTime
 	end
 end
 
